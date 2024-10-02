@@ -10,9 +10,12 @@ class CreateAvailableItemsTable extends Migration
     {
         Schema::create('available_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
-            $table->integer('available');
+            $table->unsignedBigInteger('item_id');
+            $table->integer('available')->default(0); // Store available quantity
             $table->timestamps();
+
+            // Foreign key linking to the items table
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
         });
     }
 

@@ -14,7 +14,7 @@ class CreateItemsTable extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('price', 8, 2);
-            $table->string('image')->nullable(); // Add this line for image path
+            $table->string('img'); // Store image file path
             $table->timestamps();
         });
     }

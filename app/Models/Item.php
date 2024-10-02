@@ -9,24 +9,17 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'category_id',
-        'quantity',
-        'price',
-        'img',
-    ];
+    protected $fillable = ['name', 'category_id', 'quantity', 'price', 'img'];
 
+    // Define the relationship with AvailableItem
+    public function availableItem()
+    {
+        return $this->hasOne(AvailableItem::class);
+    }
 
-    // Relationship to Category
+    // Define the relationship with Category
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    // Relationship to AvailableItem
-    public function availableItem()
-    {
-        return $this->hasOne(AvailableItem::class, 'item_id');
     }
 }
