@@ -9,7 +9,7 @@ class Rent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['item_id', 'date_from', 'date_to', 'user_id'];
+    protected $fillable = ['item_id', 'date_from', 'date_to', 'user_id', 'quantity'];
 
     public function item()
     {

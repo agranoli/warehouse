@@ -19,6 +19,7 @@ class GetRentController extends Controller
                 'user_id' => $rent->user_id,
                 'date_from' => $rent->date_from,
                 'date_to' => $rent->date_to,
+                'quantity' => $rent->quantity, // Include quantity
                 'item' => [
                     'id' => $rent->item->id,
                     'name' => $rent->item->name,
@@ -42,6 +43,7 @@ class GetRentController extends Controller
             'user_id' => $rent->user_id,
             'date_from' => $rent->date_from,
             'date_to' => $rent->date_to,
+            'quantity' => $rent->quantity, // Include quantity
             'item' => [
                 'id' => $rent->item->id,
                 'name' => $rent->item->name,

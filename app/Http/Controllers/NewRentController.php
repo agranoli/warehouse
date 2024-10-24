@@ -19,6 +19,7 @@ class NewRentController extends Controller
             'items.*.item_id' => 'required|exists:items,id',
             'items.*.date_from' => 'required|date',
             'items.*.date_to' => 'required|date|after_or_equal:items.*.date_from',
+            'items.*.quantity' => 'required|integer|min:1', // Validate quantity
         ]);
 
         DB::beginTransaction();
@@ -26,18 +27,20 @@ class NewRentController extends Controller
         try {
             foreach ($request->input('items') as $itemData) {
                 $item = Item::find($itemData['item_id']);
+                $quantity = $itemData['quantity'];
 
-                if ($item->availableItem && $item->availableItem->available > 0) {
-                    $item->availableItem->decrement('available');
+                if ($item->availableItem && $item->availableItem->available >= $quantity) {
+                    $item->availableItem->decrement('available', $quantity);
 
                     $rent = new Rent();
                     $rent->item_id = $item->id;
                     $rent->date_from = $itemData['date_from'];
                     $rent->date_to = $itemData['date_to'];
                     $rent->user_id = Auth::id();
+                    $rent->quantity = $quantity; // Set the quantity
                     $rent->save();
                 } else {
-                    throw new \Exception("Item with ID {$item->id} is not available for rent");
+                    throw new \Exception("Item with ID {$item->id} is not available in the requested quantity");
                 }
             }
 
