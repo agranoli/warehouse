@@ -11,34 +11,26 @@ class NewEventController extends Controller
     {
         // Validate the request
         $request->validate([
-            'nosaukums' => 'required|string|max:255',
-            'datums_no' => 'required|date',
-            'datums_lidz' => 'required|date|after_or_equal:datums_no',
+            'name' => 'required|string|max:255',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date|after_or_equal:date_from',
             'file' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'img' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // Validate img file
-            'users' => 'required|array',  // Array of user IDs
-            'users.*' => 'exists:users,id',  // Ensure user IDs exist in the users table
+            'img' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
         ]);
 
-        // Handle file upload
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('event_files', 'public');
-        }
-
-        // Handle img upload
-        $imgPath = null;
-        if ($request->hasFile('img')) {
-            $imgPath = $request->file('img')->store('event_images', 'public');
-        }
+        // Handle file uploads
+        $filePath = $request->hasFile('file') ? $request->file('file')->store('event_files', 'public') : null;
+        $imgPath = $request->hasFile('img') ? $request->file('img')->store('event_images', 'public') : null;
 
         // Create the event
         $event = Event::create([
-            'nosaukums' => $request->input('nosaukums'),
-            'datums_no' => $request->input('datums_no'),
-            'datums_lidz' => $request->input('datums_lidz'),
+            'name' => $request->input('name'),
+            'date_from' => $request->input('date_from'),
+            'date_to' => $request->input('date_to'),
             'file' => $filePath,
-            'img' => $imgPath, // Store img path
+            'img' => $imgPath,
         ]);
 
         // Attach selected users to the event
