@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Rent;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class GetRentController extends Controller
 {
     public function index()
     {
-        // Eager load the related item data
-        $rents = Rent::with('item')->get();
+        // Eager load the related item data and filter rents where date_to is today or in the future
+        $rents = Rent::with('item')
+            ->where('date_to', '>=', Carbon::today())
+            ->get();
 
         // Format the response to include item details
         $formattedRents = $rents->map(function ($rent) {

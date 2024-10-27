@@ -3,28 +3,26 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\Rent;
+use Carbon\Carbon;
 
 class UpdateAvailableItems extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:update-available-items';
+    protected $signature = 'items:update-availability';
+    protected $description = 'Update available quantity of items based on expired rents';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        //
+        $expiredRents = Rent::where('date_to', '<', Carbon::now())->get();
+
+        foreach ($expiredRents as $rent) {
+            $availableItem = $rent->item->availableItem;
+            if ($availableItem) {
+                $availableItem->available += $rent->quantity;
+                $availableItem->save();
+            }
+        }
+
+        $this->info('Available quantities updated successfully.');
     }
 }
