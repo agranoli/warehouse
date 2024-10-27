@@ -14,27 +14,26 @@ class NewEventController extends Controller
             'name' => 'required|string|max:255',
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'img' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'users' => 'required|array',
-            'users.*' => 'exists:users,id',
+            'img' => 'required|file|image|max:2048',
         ]);
 
         // Handle file uploads
-        $filePath = $request->hasFile('file') ? $request->file('file')->store('event_files', 'public') : null;
-        $imgPath = $request->hasFile('img') ? $request->file('img')->store('event_images', 'public') : null;
+        $filePath = null;
+        if ($request->hasFile('img')) {
+            $filePath = $request->file('img')->store('images', 'public'); // Store image in the 'public/images' directory
+            // Debugging: Check if the file path is set
+            if (!$filePath) {
+                return response()->json(['message' => 'File upload failed'], 500);
+            }
+        }
 
         // Create the event
         $event = Event::create([
             'name' => $request->input('name'),
             'date_from' => $request->input('date_from'),
             'date_to' => $request->input('date_to'),
-            'file' => $filePath,
-            'img' => $imgPath,
+            'img' => $filePath,
         ]);
-
-        // Attach selected users to the event
-        $event->users()->attach($request->input('users'));
 
         return response()->json(['message' => 'Event created successfully']);
     }

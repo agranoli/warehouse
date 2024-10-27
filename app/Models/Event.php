@@ -9,11 +9,6 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nosaukums', 'datums_no', 'datums_lidz', 'file'];
-
-    // Many-to-many relationship with User
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
-    }
+    // Ensure the fillable fields match your database column names
+    protected $fillable = ['name', 'date_from', 'date_to', 'file'];
 }

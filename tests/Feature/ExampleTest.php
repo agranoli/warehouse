@@ -3,5 +3,6 @@
 test('example', function () {
     $response = $this->get('/');
 
-    $response->assertStatus(200);
+    // Intentionally assert a status code that is incorrect to make the test fail
+    $response->assertStatus(500);
 });

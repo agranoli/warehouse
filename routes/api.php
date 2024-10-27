@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GetCategoryController;
+use App\Http\Controllers\GetEventController;
 use App\Http\Controllers\GetUsersController;
 use App\Http\Controllers\NewCategoryController;
 use App\Http\Controllers\GetItemsController;
@@ -20,6 +21,8 @@ Route::get('/categories', [GetCategoryController::class, 'index']);
 Route::get('/items', [GetItemsController::class, 'index']);
 Route::get('/items/{id}', [GetItemsController::class, 'show']);
 Route::post('/events', [NewEventController::class, 'store']);
+Route::get('/events', [GetEventController::class, 'index']);
+Route::get('/events/{id}', [GetEventController::class, 'show']);
 Route::get('/users', [GetUsersController::class, 'index']);
 Route::get('/status', [AuthController::class, 'status']);
 Route::post('/rent', [NewRentController::class,'store'])->middleware('auth:sanctum');
