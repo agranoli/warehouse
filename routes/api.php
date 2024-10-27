@@ -9,6 +9,7 @@ use App\Http\Controllers\NewItemController;
 use App\Http\Controllers\GetAvailableItems;
 use App\Http\Controllers\NewRentController;
 use App\Http\Controllers\GetRentController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::get('/items', [GetItemsController::class, 'index']);
 Route::get('/items/{id}', [GetItemsController::class, 'show']);
 Route::post('/events', [NewEventController::class, 'store']);
 Route::get('/users', [GetUsersController::class, 'index']);
+Route::get('/status', [AuthController::class, 'status']);
 Route::post('/rent', [NewRentController::class,'store'])->middleware('auth:sanctum');
 Route::get('/rents', [GetRentController::class, 'index']);
 Route::get('/rents/{id}', [GetRentController::class, 'show']);
