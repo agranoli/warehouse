@@ -12,7 +12,7 @@ class DeleteController extends Controller
      * Delete the specified event.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroyEvent(int $id): Response
     {
@@ -27,7 +27,7 @@ class DeleteController extends Controller
      * Delete the specified item.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroyItem(int $id): Response
     {
