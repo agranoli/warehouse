@@ -23,8 +23,8 @@ Route::get('/available-items', [GetAvailableItems::class, 'getAvailableItems']);
 Route::get('/categories', [GetCategoryController::class, 'index']);
 Route::get('/items', [GetItemsController::class, 'index']);
 Route::get('/items/{id}', [GetItemsController::class, 'show']);
-Route::delete('/event/{id}', [DeleteController::class, 'destroyEvent']);
-Route::delete('/item/{id}', [DeleteController::class, 'destroyItem']);
+//Route::delete('/event/{id}', [DeleteController::class, 'destroyEvent']);
+//Route::delete('/item/{id}', [DeleteController::class, 'destroyItem']);
 Route::put('/items/{id}', [EditItemController::class, 'update']); // Route for updating items
 Route::post('/events', [NewEventController::class, 'store']);
 Route::get('/events', [GetEventController::class, 'index']);
