@@ -20,6 +20,8 @@ class NewItemController extends Controller
             'img' => 'required|file|image|max:2048',
         ]);
 
+        $filePath = null;
+
         if ($request->hasFile('img')) {
             $filePath = $request->file('img')->store('images', 'public');
         }
@@ -29,7 +31,7 @@ class NewItemController extends Controller
         $item->category_id = $request->input('category_id');
         $item->quantity = $request->input('quantity');
         $item->price = $request->input('price');
-        $item->img = $filePath;
+        $item->img = $filePath ? asset('storage/' . $filePath) : null;
         $item->save();
 
         $availableItem = new AvailableItem();
@@ -37,7 +39,6 @@ class NewItemController extends Controller
         $availableItem->available = $item->quantity;
         $availableItem->save();
 
-        // Return the response
         return response()->json($item, 201);
     }
 }

@@ -18,9 +18,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/categories', [NewCategoryController::class, 'store']);
+Route::get('/categories', [GetCategoryController::class, 'index']);
 Route::post('/items', [NewItemController::class, 'store']);
 Route::get('/available-items', [GetAvailableItems::class, 'getAvailableItems']);
-Route::get('/categories', [GetCategoryController::class, 'index']);
 Route::get('/items', [GetItemsController::class, 'index']);
 Route::get('/items/{id}', [GetItemsController::class, 'show']);
 //Route::delete('/event/{id}', [DeleteController::class, 'destroyEvent']);
