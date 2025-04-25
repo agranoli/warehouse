@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\GetEventController;
@@ -23,8 +24,8 @@ Route::post('/items', [NewItemController::class, 'store']);
 Route::get('/available-items', [GetAvailableItems::class, 'getAvailableItems']);
 Route::get('/items', [GetItemsController::class, 'index']);
 Route::get('/items/{id}', [GetItemsController::class, 'show']);
-//Route::delete('/event/{id}', [DeleteController::class, 'destroyEvent']);
-//Route::delete('/item/{id}', [DeleteController::class, 'destroyItem']);
+Route::delete('/event/{id}', [DeleteController::class, 'destroyEvent']);
+Route::delete('/item/{id}', [DeleteController::class, 'destroyItem']);
 Route::put('/items/{id}', [EditItemController::class, 'update']); // Route for updating items
 Route::post('/events', [NewEventController::class, 'store']);
 Route::get('/events', [GetEventController::class, 'index']);
@@ -38,4 +39,11 @@ Route::get('/rents/{id}', [GetRentController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware('admin')->group(function () {
+        Route::get('/users', [AdminController::class, 'index']); // List all users
+        Route::post('/admin/users/{id}/promote', [AdminController::class, 'promote']); // Promote role
+        Route::delete('/admin/users/{id}', [AdminController::class, 'destroy']); // Delete user
+    });
 });

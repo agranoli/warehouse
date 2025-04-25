@@ -22,15 +22,15 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required',  Rules\Password::defaults()],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->string('password')),
-            'is_approved' => false,
+            'role' => 'guest', // not approved = guest
         ]);
 
         event(new Registered($user));
@@ -38,6 +38,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return response()->json(['message' => 'Registration successful'], 204);
-//        return redirect()->route('waiting-for-approval');
     }
+
 }

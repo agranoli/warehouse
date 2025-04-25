@@ -18,6 +18,7 @@ class GetItemsController extends Controller
                 'id' => $item->id,
                 'name' => $item->name,
                 'img' => $item->img,
+                'price' => $item->price,
                 'available' => $item->availableItem ? $item->availableItem->available : null, // Fetch available from the related availableItem
                 'category' => $item->category ? $item->category->name : null,  // Fetch category name
             ];
@@ -36,6 +37,7 @@ class GetItemsController extends Controller
             'id' => $item->id,
             'name' => $item->name,
             'img' => $item->img,
+            'price' => $item->price,
             'available' => $item->availableItem ? $item->availableItem->available : null, // Fetch available from the related availableItem
             'category' => $item->category ? $item->category->name : null,  // Fetch category name
         ];

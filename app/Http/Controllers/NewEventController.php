@@ -4,37 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewEventController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate the request
+        // Validate the incoming request
         $request->validate([
             'name' => 'required|string|max:255',
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
-            'img' => 'required|file|image|max:2048',
+            'file' => 'required|file|image|max:2048',
         ]);
 
-        // Handle file uploads
         $filePath = null;
-        if ($request->hasFile('img')) {
-            $filePath = $request->file('img')->store('images', 'public'); // Store image in the 'public/images' directory
-            // Debugging: Check if the file path is set
-            if (!$filePath) {
-                return response()->json(['message' => 'File upload failed'], 500);
-            }
+
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('images', 'public');
         }
 
-        // Create the event
-        $event = Event::create([
-            'name' => $request->input('name'),
-            'date_from' => $request->input('date_from'),
-            'date_to' => $request->input('date_to'),
-            'img' => $filePath,
-        ]);
+        $event = new Event();
+        $event->name = $request->input('name');
+        $event->date_from = $request->input('date_from');
+        $event->date_to = $request->input('date_to');
+        $event->file = $filePath ? asset('storage/' . $filePath) : null;
+        $event->save();
 
-        return response()->json(['message' => 'Event created successfully']);
+        return response()->json($event, 201);
     }
 }
